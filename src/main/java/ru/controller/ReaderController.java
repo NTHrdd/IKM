@@ -14,8 +14,7 @@ import java.util.UUID;
 public class ReaderController {
     private final ReaderService readerService;
 
-    public ReaderController(ReaderService readerService) {
-        this.readerService = readerService;}
+    public ReaderController(ReaderService readerService) {this.readerService = readerService;}
 
     @GetMapping
     public String getReadersPage(Model model) {

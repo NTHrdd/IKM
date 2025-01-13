@@ -27,50 +27,42 @@ public class LoanController {
 
     @GetMapping
     public String getLoansPage(Model model) {
-        List<Loan> loans = loanService.getAllLoans(); // Получаем список всех выдач
-        model.addAttribute("loans", loans); // Передаем список в модель
-        model.addAttribute("loan", new Loan()); // Пустой объект для формы
-        model.addAttribute("books", bookService.getAllBooks()); // Список книг
-        model.addAttribute("readers", readerService.getAllReaders()); // Список читателей
-        return "loans"; // Возвращает шаблон loans.html
+        List<Loan> loans = loanService.getAllLoans();
+        model.addAttribute("loans", loans);
+        model.addAttribute("loan", new Loan());
+        model.addAttribute("books", bookService.getAllBooks());
+        model.addAttribute("readers", readerService.getAllReaders());
+        return "loans";
     }
 
     @PostMapping
     public String addLoan(@ModelAttribute Loan loan) {
         loanService.addLoan(loan);
-        return "redirect:/loans"; // Перенаправляем на страницу со списком выдач
+        return "redirect:/loans";
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteLoan(@PathVariable UUID id) {
         try {
             loanService.deleteLoan(id);
-            return ResponseEntity.noContent().build(); // Успешное удаление (204 No Content)
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.notFound().build(); // Выдача не найдена (404 Not Found)
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/edit/{id}")
     public String editLoanForm(@PathVariable UUID id, Model model) {
         Loan loan = loanService.getLoanById(id);
-        model.addAttribute("loan", loan); // Передаем выдачу в шаблон
-        model.addAttribute("books", bookService.getAllBooks()); // Список книг
-        model.addAttribute("readers", readerService.getAllReaders()); // Список читателей
-        return "edit-loan"; // Возвращаем шаблон для редактирования выдачи
+        model.addAttribute("loan", loan);
+        model.addAttribute("books", bookService.getAllBooks());
+        model.addAttribute("readers", readerService.getAllReaders());
+        return "edit-loan";
     }
 
     @PostMapping("/edit/{id}")
     public String updateLoan(@PathVariable UUID id, @ModelAttribute Loan loan) {
-        loanService.updateLoan(
-                id,
-                loan.getBookId(), // ID книги
-                loan.getReaderId(), // ID читателя
-                loan.getLoanDate(), // Дата выдачи
-                loan.getPenalty(), // Штраф
-                loan.getLoanDuration(), // Продолжительность выдачи
-                loan.getStatus() // Статус
-        );
-        return "redirect:/loans"; // Перенаправляем на страницу со списком выдач
+        loanService.updateLoan(id, loan.getBookId(), loan.getReaderId(), loan.getLoanDate(), loan.getPenalty(), loan.getLoanDuration(), loan.getStatus());
+        return "redirect:/loans";
     }
 }

@@ -13,22 +13,15 @@ import java.util.UUID;
 public class ReaderService {
     private final ReaderRepository readerRepository;
 
-    public ReaderService(ReaderRepository readerRepository) {
-        this.readerRepository = readerRepository;
-    }
+    public ReaderService(ReaderRepository readerRepository) {this.readerRepository = readerRepository;}
 
-    // Получение всех читателей
-    public List<Reader> getAllReaders() {
-        return readerRepository.findAll();
-    }
+    public List<Reader> getAllReaders() {return readerRepository.findAll();}
 
-    // Добавление нового читателя
     public Reader addReader(Reader reader) {
-        reader.setRegistrationTime(ZonedDateTime.now()); // Устанавливаем текущее время регистрации
+        reader.setRegistrationTime(ZonedDateTime.now());
         return readerRepository.save(reader);
     }
 
-    // Обновление данных читателя
     @Transactional
     public void updateReader(UUID readerId, String newName, String newSurname, String newPatronymic, String newEmail, String newBirthDate, String newPhoneNumber) {
         Reader reader = readerRepository.findById(readerId).orElseThrow();
@@ -41,18 +34,14 @@ public class ReaderService {
         readerRepository.save(reader);
     }
 
-    // Удаление читателя
     @Transactional
     public void deleteReader(UUID readerId) {
         readerRepository.deleteById(readerId);
     }
 
-    // Получение читателя по ID
     public Reader getReaderById(UUID id) {
         return readerRepository.findById(id).orElseThrow();
     }
 
-    public Reader findById(UUID readerId) {
-        return readerRepository.findById(readerId).orElseThrow();
-    }
+    public Reader findById(UUID readerId) {return readerRepository.findById(readerId).orElseThrow();}
 }

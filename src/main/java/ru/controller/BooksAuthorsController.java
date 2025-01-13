@@ -36,23 +36,17 @@ public class BooksAuthorsController {
     public String addBookAuthor(@RequestParam UUID bookId, @RequestParam UUID authorId) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
-
         book.getAuthors().add(author);
         bookRepository.save(book);
-
         return "redirect:/book-authors";
     }
 
-    // Удаление связи между книгой и автором
     @PostMapping("/delete")
     public String deleteBookAuthor(@RequestParam UUID bookId, @RequestParam UUID authorId) {
         Book book = bookRepository.findById(bookId).orElseThrow(() -> new RuntimeException("Book not found"));
         Author author = authorRepository.findById(authorId).orElseThrow(() -> new RuntimeException("Author not found"));
-
-        // Удаляем автора из списка авторов книги
         book.getAuthors().remove(author);
         bookRepository.save(book);
-
-        return "redirect:/book-authors"; // Перенаправление на страницу со списком связей
+        return "redirect:/book-authors";
     }
 }

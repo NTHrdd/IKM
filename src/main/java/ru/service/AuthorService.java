@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Author;
 import ru.repository.AuthorRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -13,21 +12,12 @@ import java.util.UUID;
 public class AuthorService {
     private final AuthorRepository authorRepository;
 
-    public AuthorService(AuthorRepository authorRepository) {
-        this.authorRepository = authorRepository;
-    }
+    public AuthorService(AuthorRepository authorRepository) {this.authorRepository = authorRepository;}
 
-    // Получение всех авторов
-    public List<Author> getAllAuthors() {
-        return authorRepository.findAll();
-    }
+    public List<Author> getAllAuthors() {return authorRepository.findAll();}
 
-    // Добавление нового автора
-    public Author addAuthor(Author author) {
-        return authorRepository.save(author);
-    }
+    public Author addAuthor(Author author) {return authorRepository.save(author);}
 
-    // Обновление данных автора
     @Transactional
     public void updateAuthor(UUID authorId, String newSurname, String newName, String newPatronymic, String newBirthDate, String newBiography) {
         Author author = authorRepository.findById(authorId).orElseThrow();
@@ -39,14 +29,8 @@ public class AuthorService {
         authorRepository.save(author);
     }
 
-    // Удаление автора
     @Transactional
-    public void deleteAuthor(UUID authorId) {
-        authorRepository.deleteById(authorId);
-    }
+    public void deleteAuthor(UUID authorId) {authorRepository.deleteById(authorId);}
 
-    // Получение автора по ID
-    public Author getAuthorById(UUID id) {
-        return authorRepository.findById(id).orElseThrow();
-    }
+    public Author getAuthorById(UUID id) {return authorRepository.findById(id).orElseThrow();}
 }

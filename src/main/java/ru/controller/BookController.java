@@ -24,38 +24,38 @@ public class BookController {
     @GetMapping
     public String getBooksPage(Model model) {
         model.addAttribute("books", bookService.getAllBooks());
-        model.addAttribute("book", new Book()); // Передаем пустой объект Book для формы
+        model.addAttribute("book", new Book());
         model.addAttribute("genres", genreService.getAllGenres());
-        return "books"; // Возвращает шаблон books.html
+        return "books";
     }
 
     @PostMapping
     public String addBook(@ModelAttribute Book book) {
         bookService.addBook(book);
-        return "redirect:/books"; // Перенаправляем на страницу со списком книг
+        return "redirect:/books";
     }
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<Void> deleteBook(@PathVariable UUID id) {
         try {
             bookService.deleteBook(id);
-            return ResponseEntity.noContent().build(); // Успешное удаление (204 No Content)
+            return ResponseEntity.noContent().build();
         } catch (Exception e) {
-            return ResponseEntity.notFound().build(); // Книга не найдена (404 Not Found)
+            return ResponseEntity.notFound().build();
         }
     }
 
     @GetMapping("/edit/{id}")
     public String editBookForm(@PathVariable UUID id, Model model) {
         Book book = bookService.getBookById(id);
-        model.addAttribute("book", book); // Передаем книгу в шаблон
-        model.addAttribute("genres", genreService.getAllGenres()); // Передаем список жанров
-        return "edit-book"; // Возвращаем шаблон для редактирования книги
+        model.addAttribute("book", book);
+        model.addAttribute("genres", genreService.getAllGenres());
+        return "edit-book";
     }
 
     @PostMapping("/edit/{id}")
     public String updateBook(@PathVariable UUID id, @ModelAttribute Book book) {
         bookService.updateBook(id, book.getTitle(), book.getDescription(), book.getGenreId(), book.isAvailable(), book.getPublicationDate(), book.getPopularityScore());
-        return "redirect:/books"; // Перенаправляем на страницу со списком книг
+        return "redirect:/books";
     }
 }

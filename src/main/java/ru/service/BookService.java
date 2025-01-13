@@ -5,7 +5,6 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Book;
 import ru.repository.BookRepository;
 
-import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -38,15 +37,9 @@ public class BookService {
     }
 
     @Transactional
-    public void deleteBook(UUID bookId) {
-        bookRepository.deleteById(bookId);
-    }
+    public void deleteBook(UUID bookId) {bookRepository.deleteById(bookId);}
 
-    public Book getBookById(UUID id) {
-        return bookRepository.findById(id).orElseThrow();
-    }
+    public Book getBookById(UUID id) {return bookRepository.findById(id).orElseThrow();}
 
-    public Book findById(UUID bookId) {
-        return bookRepository.findById(bookId).orElseThrow();
-    }
+    public Book findById(UUID bookId) {return bookRepository.findById(bookId).orElseThrow();}
 }

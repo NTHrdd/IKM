@@ -77,13 +77,9 @@ public class Book {
         }
     }
 
-    public Float getPopularityScore() {
-        return popularityScore;
-    }
+    public Float getPopularityScore() {return popularityScore;}
 
-    public void setPopularityScore(Float popularityScore) {
-        this.popularityScore = popularityScore;
-    }
+    public void setPopularityScore(Float popularityScore) {this.popularityScore = popularityScore;}
 
     public String getCreatedAt() {
         if (createdAt != null) {return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
