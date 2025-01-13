@@ -51,4 +51,8 @@ public class ReaderService {
     public Reader getReaderById(UUID id) {
         return readerRepository.findById(id).orElseThrow();
     }
+
+    public Reader findById(UUID readerId) {
+        return readerRepository.findById(readerId).orElseThrow();
+    }
 }

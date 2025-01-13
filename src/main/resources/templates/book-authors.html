@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Book Authors</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Book Authors</h1>
+
+    <!-- Таблица для отображения связей между книгами и авторами -->
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Authors</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="book : ${books}">
+            <td th:text="${book.title}"></td>
+            <td>
+                <!-- Итерация по списку авторов книги -->
+                <ul>
+                    <li th:each="author : ${book.authors}" th:text="${author.name + ' ' + author.surname}"></li>
+                </ul>
+            </td>
+            <td>
+                <!-- Кнопка для удаления связи -->
+                <form th:action="@{/book-authors/delete}" method="post" th:each="author : ${book.authors}">
+                    <input type="hidden" name="bookId" th:value="${book.id}">
+                    <input type="hidden" name="authorId" th:value="${author.id}">
+                    <button type="submit" class="btn btn-danger btn-sm">Remove</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Форма для добавления новой связи между книгой и автором -->
+    <h2 class="mt-5">Add a new book-author relationship</h2>
+    <form th:action="@{/book-authors/add}" method="post">
+        <div class="mb-3">
+            <label for="bookId" class="form-label">Book</label>
+            <select class="form-control" id="bookId" name="bookId" required>
+                <option value="">Select Book</option>
+                <!-- Итерация по списку книг -->
+                <option th:each="book : ${books}" th:value="${book.id}" th:text="${book.title}"></option>
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="authorId" class="form-label">Author</label>
+            <select class="form-control" id="authorId" name="authorId" required>
+                <option value="">Select Author</option>
+                <!-- Итерация по списку авторов -->
+                <option th:each="author : ${authors}" th:value="${author.id}" th:text="${author.name + ' ' + author.surname}"></option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-success">Add Relationship</button>
+    </form>
+</div>
+</body>
+</html>

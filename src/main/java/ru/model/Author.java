@@ -3,6 +3,7 @@ package ru.model;
 import jakarta.persistence.*;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -24,6 +25,9 @@ public class Author {
     private LocalDate birthDate;
 
     private String biography;
+
+    @ManyToMany(mappedBy = "authors")
+    private Set<Book> books;
 
     public UUID getId() {return id;}
 
@@ -57,4 +61,8 @@ public class Author {
     }
 
     public void setBiography(String biography) {this.biography = biography;}
+
+    public Set<Book> getBooks() {return books;}
+
+    public void setBooks(Set<Book> books) {this.books = books;}
 }

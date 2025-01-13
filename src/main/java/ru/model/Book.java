@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -33,6 +34,14 @@ public class Book {
     @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;
 
+    @ManyToMany
+    @JoinTable(
+            name = "book_authors",
+            joinColumns = @JoinColumn(name = "book_id"),
+            inverseJoinColumns = @JoinColumn(name = "author_id")
+    )
+    private Set<Author> authors;
+
     public UUID getId() {return id;}
 
     public void setId(UUID id) {this.id = id;}
@@ -58,9 +67,7 @@ public class Book {
         return null;
     }
 
-    public void setPublicationDate(LocalDate publicationDate) {
-        this.publicationDate = publicationDate;
-    }
+    public void setPublicationDate(LocalDate publicationDate) {this.publicationDate = publicationDate;}
 
     public void setPublicationDate(String publicationDate) {
         if (publicationDate != null && !publicationDate.isEmpty()) {
@@ -79,22 +86,18 @@ public class Book {
     }
 
     public String getCreatedAt() {
-        if (createdAt != null) {
-            return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
+        if (createdAt != null) {return createdAt.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
         return null;
     }
 
     @PrePersist
-    protected void onCreate() {
-        this.createdAt = LocalDate.now(); // Устанавливаем текущую дату
-    }
+    protected void onCreate() {this.createdAt = LocalDate.now();}
 
-    public boolean isAvailable() {
-        return isAvailable;
-    }
+    public boolean isAvailable() {return isAvailable;}
 
-    public void setAvailable(boolean newIsAvailable) {
-        this.isAvailable = newIsAvailable;
-    }
+    public void setAvailable(boolean newIsAvailable) {this.isAvailable = newIsAvailable;}
+
+    public Set<Author> getAuthors() {return authors;}
+
+    public void setAuthors(Set<Author> authors) {this.authors = authors;}
 }

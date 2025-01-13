@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Loans</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Loans</h1>
+
+    <!-- Таблица с выдачами -->
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Book Title</th>
+            <th>Reader Name</th>
+            <th>Loan Date</th>
+            <th>Penalty</th>
+            <th>Loan Duration</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="loan : ${loans}">
+            <!-- Название книги -->
+            <td>
+                    <span th:each="book : ${books}"
+                          th:if="${book.id == loan.bookId}"
+                          th:text="${book.title}">
+                    </span>
+            </td>
+            <!-- Имя читателя -->
+            <td>
+                    <span th:each="reader : ${readers}"
+                          th:if="${reader.id == loan.readerId}"
+                          th:text="${reader.surname + ' ' + reader.name}">
+                    </span>
+            </td>
+            <td th:text="${loan.loanDate}">Loan Date</td>
+            <td th:text="${loan.penalty}">Penalty</td>
+            <td th:text="${loan.loanDuration}">Loan Duration</td>
+            <td th:text="${loan.status}">Status</td>
+            <td>
+                <a th:href="@{/loans/edit/{id}(id=${loan.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <form th:action="@{/loans/delete/{id}(id=${loan.id})}" method="post" style="display: inline;">
+                    <button type="submit" class="btn btn-danger btn-sm">Delete</button>
+                </form>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- Форма для добавления новой выдачи -->
+    <h2>Add New Loan</h2>
+    <form th:action="@{/loans}" th:object="${loan}" method="post">
+        <!-- Поле для выбора книги -->
+        <div class="mb-3">
+            <label for="bookId" class="form-label">Book</label>
+            <select class="form-control" id="bookId" th:field="*{bookId}" required>
+                <option value="">Select Book</option>
+                <option th:each="book : ${books}"
+                        th:value="${book.id}"
+                        th:text="${book.title}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Поле для выбора читателя -->
+        <div class="mb-3">
+            <label for="readerId" class="form-label">Reader</label>
+            <select class="form-control" id="readerId" th:field="*{readerId}" required>
+                <option value="">Select Reader</option>
+                <option th:each="reader : ${readers}"
+                        th:value="${reader.id}"
+                        th:text="${reader.surname + ' ' + reader.name}">
+                </option>
+            </select>
+        </div>
+
+        <!-- Поле для даты выдачи -->
+        <div class="mb-3">
+            <label for="loanDate" class="form-label">Loan Date</label>
+            <input type="date" class="form-control" id="loanDate"
+                   th:field="*{loanDate}"
+                   required min="1000-01-01" max="9999-12-31">
+        </div>
+
+        <!-- Поле для штрафа -->
+        <div class="mb-3">
+            <label for="penalty" class="form-label">Penalty</label>
+            <input type="number" step="0.01" class="form-control" id="penalty"
+                   th:field="*{penalty}">
+        </div>
+
+        <!-- Поле для продолжительности выдачи -->
+        <div class="mb-3">
+            <label for="loanDuration" class="form-label">Loan Duration</label>
+            <input type="text" class="form-control" id="loanDuration"
+                   th:field="*{loanDuration}">
+        </div>
+
+        <!-- Поле для статуса -->
+        <div class="mb-3">
+            <label for="status" class="form-label">Status</label>
+            <select class="form-control" id="status" th:field="*{status}" required>
+                <option value="active">Active</option>
+                <option value="overdue">Overdue</option>
+                <option value="closed">Closed</option>
+            </select>
+        </div>
+
+        <!-- Кнопка для добавления выдачи -->
+        <button type="submit" class="btn btn-primary">Add Loan</button>
+    </form>
+</div>
+</body>
+</html>

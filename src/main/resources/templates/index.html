@@ -1,25 +1,22 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Books</title>
+    <meta charset="UTF-8">
+    <title>Library Management System</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
 </head>
 <body>
-<h1>Books</h1>
-<table>
-    <thead>
-    <tr>
-        <th>Title</th>
-        <th>Description</th>
-        <th>Genre</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="book : ${books}">
-        <td th:text="${book.title}"></td>
-        <td th:text="${book.description}"></td>
-        <td th:text="${book.genre.name}"></td>
-    </tr>
-    </tbody>
-</table>
+<div class="container mt-5">
+    <h1>Welcome to the Library Management System</h1>
+    <p>Please select a section to manage:</p>
+
+    <div class="list-group">
+        <a th:href="@{/books}" class="list-group-item list-group-item-action">Books</a>
+        <a th:href="@{/authors}" class="list-group-item list-group-item-action">Authors</a>
+        <a th:href="@{/readers}" class="list-group-item list-group-item-action">Readers</a>
+        <a th:href="@{/loans}" class="list-group-item list-group-item-action">Loans</a>
+        <a th:href="@{/book-authors}" class="list-group-item list-group-item-action">Authors of book</a>
+    </div>
+</div>
 </body>
 </html>

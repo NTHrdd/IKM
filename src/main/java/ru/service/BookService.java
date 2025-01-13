@@ -45,4 +45,8 @@ public class BookService {
     public Book getBookById(UUID id) {
         return bookRepository.findById(id).orElseThrow();
     }
+
+    public Book findById(UUID bookId) {
+        return bookRepository.findById(bookId).orElseThrow();
+    }
 }
