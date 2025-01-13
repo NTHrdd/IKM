@@ -33,51 +33,28 @@ public class Book {
     @Column(name = "created_at", updatable = false)
     private LocalDate createdAt;
 
-    // Геттеры и сеттеры
-    public UUID getId() {
-        return id;
-    }
+    public UUID getId() {return id;}
 
-    public void setId(UUID id) {
-        this.id = id;
-    }
+    public void setId(UUID id) {this.id = id;}
 
-    public String getTitle() {
-        return title;
-    }
+    public String getTitle() {return title;}
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
+    public void setTitle(String title) {this.title = title;}
 
-    public String getDescription() {
-        return description;
-    }
+    public String getDescription() {return description;}
 
-    public void setDescription(String description) {
-        this.description = description;
-    }
+    public void setDescription(String description) {this.description = description;}
 
-    public Integer getGenreId() {
-        return genreId;
-    }
+    public Integer getGenreId() {return genreId;}
 
-    public void setGenreId(Integer genreId) {
-        this.genreId = genreId;
-    }
+    public void setGenreId(Integer genreId) {this.genreId = genreId;}
 
-    public Boolean getIsAvailable() {
-        return isAvailable;
-    }
+    public Boolean getIsAvailable() {return isAvailable;}
 
-    public void setIsAvailable(Boolean isAvailable) {
-        this.isAvailable = isAvailable;
-    }
+    public void setIsAvailable(Boolean isAvailable) {this.isAvailable = isAvailable;}
 
     public String getPublicationDate() {
-        if (publicationDate != null) {
-            return publicationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        }
+        if (publicationDate != null) {return publicationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
         return null;
     }
 

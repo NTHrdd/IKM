@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit Author</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Edit Author</h1>
+    <form th:action="@{/authors/edit/{id}(id=${author.id})}" th:object="${author}" method="post">
+        <div class="mb-3">
+            <label for="surname" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="surname" th:field="*{surname}" required>
+        </div>
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="patronymic" class="form-label">Patronymic</label>
+            <input type="text" class="form-control" id="patronymic" th:field="*{patronymic}">
+        </div>
+        <div class="mb-3">
+            <label for="birthDate" class="form-label">Birth Date</label>
+            <input type="date" class="form-control" id="birthDate" th:field="*{birthDate}">
+        </div>
+        <div class="mb-3">
+            <label for="biography" class="form-label">Biography</label>
+            <textarea class="form-control" id="biography" th:field="*{biography}"></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary">Update Author</button>
+    </form>
+</div>
+</body>
+</html>

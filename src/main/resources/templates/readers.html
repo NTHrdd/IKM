@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Readers</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body>
+<div class="container mt-5">
+    <h1>Readers</h1>
+    <table class="table table-bordered table-striped mt-3">
+        <thead>
+        <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Surname</th>
+            <th>Patronymic</th>
+            <th>Email</th>
+            <th>Birth Date</th>
+            <th>Registration Time</th>
+            <th>Phone Number</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="reader : ${readers}">
+            <td th:text="${reader.id}"></td>
+            <td th:text="${reader.name}"></td>
+            <td th:text="${reader.surname}"></td>
+            <td th:text="${reader.patronymic}"></td>
+            <td th:text="${reader.email}"></td>
+            <td th:text="${reader.birthDate}"></td>
+            <td th:text="${reader.registrationTime}"></td>
+            <td th:text="${reader.phoneNumber}"></td>
+            <td>
+                <a th:href="@{/readers/edit/{id}(id=${reader.id})}" class="btn btn-primary btn-sm">Edit</a>
+                <button class="btn btn-danger btn-sm delete-btn"
+                        th:data-id="${reader.id}">Delete</button>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+
+    <h2 class="mt-5">Add a new reader</h2>
+    <form id="addReaderForm" method="post" th:action="@{/readers}" th:object="${reader}">
+        <div class="mb-3">
+            <label for="name" class="form-label">Name</label>
+            <input type="text" class="form-control" id="name" th:field="*{name}" required>
+        </div>
+        <div class="mb-3">
+            <label for="surname" class="form-label">Surname</label>
+            <input type="text" class="form-control" id="surname" th:field="*{surname}" required>
+        </div>
+        <div class="mb-3">
+            <label for="patronymic" class="form-label">Patronymic</label>
+            <input type="text" class="form-control" id="patronymic" th:field="*{patronymic}">
+        </div>
+        <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" th:field="*{email}" required>
+        </div>
+        <div class="mb-3">
+            <label for="birthDate" class="form-label">Birth Date</label>
+            <input type="date" class="form-control" id="birthDate" th:field="*{birthDate}">
+        </div>
+        <div class="mb-3">
+            <label for="phoneNumber" class="form-label">Phone Number</label>
+            <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}">
+        </div>
+        <button type="submit" class="btn btn-success">Add Reader</button>
+    </form>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.delete-btn').forEach(function(button) {
+            button.addEventListener('click', function() {
+                const readerId = this.getAttribute('data-id');
+                if (confirm("Are you sure you want to delete this reader?")) {
+                    fetch(`/readers/delete/${readerId}`, {
+                        method: 'DELETE'
+                    }).then(response => {
+                        if (response.ok) {
+                            location.reload();
+                        } else {
+                            alert('Failed to delete the reader.');
+                        }
+                    });
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>
