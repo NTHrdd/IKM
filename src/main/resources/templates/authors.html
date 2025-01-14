@@ -26,7 +26,7 @@
       <td th:text="${author.surname}"></td>
       <td th:text="${author.name}"></td>
       <td th:text="${author.patronymic}"></td>
-      <td th:text="${author.birthDate}"></td>
+      <td th:text="${#temporals.format(author.birthDate, 'yyyy-MM-dd')}"></td> <!-- Форматируем дату -->
       <td th:text="${author.biography}"></td>
       <td>
         <a th:href="@{/authors/edit/{id}(id=${author.id})}" class="btn btn-primary btn-sm">Edit</a>
@@ -42,22 +42,30 @@
     <div class="mb-3">
       <label for="surname" class="form-label">Surname</label>
       <input type="text" class="form-control" id="surname" th:field="*{surname}" required>
+      <div class="text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
     </div>
     <div class="mb-3">
       <label for="name" class="form-label">Name</label>
       <input type="text" class="form-control" id="name" th:field="*{name}" required>
+      <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
     </div>
     <div class="mb-3">
       <label for="patronymic" class="form-label">Patronymic</label>
       <input type="text" class="form-control" id="patronymic" th:field="*{patronymic}">
+      <div class="text-danger" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
     </div>
     <div class="mb-3">
       <label for="birthDate" class="form-label">Birth Date</label>
-      <input type="date" class="form-control" id="birthDate" th:field="*{birthDate}">
+      <input type="date" class="form-control" id="birthDate"
+             th:field="*{birthDate}"
+             th:value="${author.birthDate != null} ? ${#temporals.format(author.birthDate, 'yyyy-MM-dd')} : ''"
+             max="9999-12-31">
+      <div class="text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
     </div>
     <div class="mb-3">
       <label for="biography" class="form-label">Biography</label>
       <textarea class="form-control" id="biography" th:field="*{biography}"></textarea>
+      <div class="text-danger" th:if="${#fields.hasErrors('biography')}" th:errors="*{biography}"></div>
     </div>
     <button type="submit" class="btn btn-success">Add Author</button>
   </form>

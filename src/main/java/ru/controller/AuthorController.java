@@ -1,8 +1,10 @@
 package ru.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.model.Author;
 import ru.service.AuthorService;
@@ -14,7 +16,9 @@ import java.util.UUID;
 public class AuthorController {
     private final AuthorService authorService;
 
-    public AuthorController(AuthorService authorService) {this.authorService = authorService;}
+    public AuthorController(AuthorService authorService) {
+        this.authorService = authorService;
+    }
 
     @GetMapping
     public String getAuthorsPage(Model model) {
@@ -24,7 +28,11 @@ public class AuthorController {
     }
 
     @PostMapping
-    public String addAuthor(@ModelAttribute Author author) {
+    public String addAuthor(@Valid @ModelAttribute Author author, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("authors", authorService.getAllAuthors());
+            return "authors";
+        }
         authorService.addAuthor(author);
         return "redirect:/authors";
     }
@@ -47,7 +55,8 @@ public class AuthorController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateAuthor(@PathVariable UUID id, @ModelAttribute Author author) {
+    public String updateAuthor(@PathVariable UUID id, @Valid @ModelAttribute Author author, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {return "edit-author";}
         authorService.updateAuthor(id, author.getSurname(), author.getName(), author.getPatronymic(), author.getBirthDate(), author.getBiography());
         return "redirect:/authors";
     }

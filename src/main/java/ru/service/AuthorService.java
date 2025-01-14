@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Author;
 import ru.repository.AuthorRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -19,7 +20,7 @@ public class AuthorService {
     public Author addAuthor(Author author) {return authorRepository.save(author);}
 
     @Transactional
-    public void updateAuthor(UUID authorId, String newSurname, String newName, String newPatronymic, String newBirthDate, String newBiography) {
+    public void updateAuthor(UUID authorId, String newSurname, String newName, String newPatronymic, LocalDate newBirthDate, String newBiography) {
         Author author = authorRepository.findById(authorId).orElseThrow();
         author.setSurname(newSurname);
         author.setName(newName);
