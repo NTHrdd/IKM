@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Book;
 import ru.repository.BookRepository;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -25,7 +26,7 @@ public class BookService {
     }
 
     @Transactional
-    public void updateBook(UUID bookId, String newTitle, String newDescription, Integer newGenreId, boolean newIsAvailable, String newPublicationDate, float newPopularityScore) {
+    public void updateBook(UUID bookId, String newTitle, String newDescription, Integer newGenreId, boolean newIsAvailable, LocalDate newPublicationDate, float newPopularityScore) {
         Book book = bookRepository.findById(bookId).orElseThrow();
         book.setTitle(newTitle);
         book.setDescription(newDescription);

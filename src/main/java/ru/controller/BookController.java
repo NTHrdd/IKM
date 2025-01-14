@@ -1,8 +1,10 @@
 package ru.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.model.Book;
 import ru.service.BookService;
@@ -30,7 +32,11 @@ public class BookController {
     }
 
     @PostMapping
-    public String addBook(@ModelAttribute Book book) {
+    public String addBook(@Valid @ModelAttribute Book book, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("genres", genreService.getAllGenres());
+            return "books";
+        }
         bookService.addBook(book);
         return "redirect:/books";
     }
@@ -54,7 +60,11 @@ public class BookController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateBook(@PathVariable UUID id, @ModelAttribute Book book) {
+    public String updateBook(@PathVariable UUID id, @Valid @ModelAttribute Book book, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("genres", genreService.getAllGenres());
+            return "edit-book";
+        }
         bookService.updateBook(id, book.getTitle(), book.getDescription(), book.getGenreId(), book.isAvailable(), book.getPublicationDate(), book.getPopularityScore());
         return "redirect:/books";
     }

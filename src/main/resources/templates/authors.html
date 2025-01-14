@@ -72,7 +72,7 @@
             method: 'DELETE'
           }).then(response => {
             if (response.ok) {
-              location.reload(); // Перезагружаем страницу после успешного удаления
+              location.reload();
             } else {
               alert('Failed to delete the author.');
             }

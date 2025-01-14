@@ -9,7 +9,6 @@
 <div class="container mt-5">
     <h1>Edit Loan</h1>
     <form th:action="@{/loans/edit/{id}(id=${loan.id})}" th:object="${loan}" method="post">
-        <!-- Поле для выбора книги -->
         <div class="mb-3">
             <label for="bookId" class="form-label">Book</label>
             <select class="form-control" id="bookId" th:field="*{bookId}" required>
@@ -20,8 +19,6 @@
                 </option>
             </select>
         </div>
-
-        <!-- Поле для выбора читателя -->
         <div class="mb-3">
             <label for="readerId" class="form-label">Reader</label>
             <select class="form-control" id="readerId" th:field="*{readerId}" required>
@@ -32,8 +29,6 @@
                 </option>
             </select>
         </div>
-
-        <!-- Поле для даты выдачи -->
         <div class="mb-3">
             <label for="loanDate" class="form-label">Loan Date</label>
             <input type="date" class="form-control" id="loanDate"
@@ -42,22 +37,16 @@
                    required min="1000-01-01" max="9999-12-31">
             <div class="text-danger" th:if="${#fields.hasErrors('loanDate')}" th:errors="*{loanDate}"></div>
         </div>
-
-        <!-- Поле для штрафа -->
         <div class="mb-3">
             <label for="penalty" class="form-label">Penalty</label>
             <input type="number" step="0.01" class="form-control" id="penalty"
                    th:field="*{penalty}">
         </div>
-
-        <!-- Поле для продолжительности выдачи -->
         <div class="mb-3">
             <label for="loanDuration" class="form-label">Loan Duration</label>
             <input type="text" class="form-control" id="loanDuration"
                    th:field="*{loanDuration}">
         </div>
-
-        <!-- Поле для статуса -->
         <div class="mb-3">
             <label for="status" class="form-label">Status</label>
             <select class="form-control" id="status" th:field="*{status}" required>
@@ -66,8 +55,6 @@
                 <option value="closed">Closed</option>
             </select>
         </div>
-
-        <!-- Кнопки для сохранения и отмены -->
         <button type="submit" class="btn btn-primary">Update Loan</button>
         <a th:href="@{/loans}" class="btn btn-secondary">Cancel</a>
     </form>

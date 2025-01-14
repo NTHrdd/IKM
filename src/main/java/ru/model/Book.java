@@ -1,6 +1,8 @@
 package ru.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -14,20 +16,28 @@ public class Book {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
+    @NotBlank(message = "Title is mandatory")
+    @Size(max = 255, message = "Title must be less than 255 characters")
     @Column(nullable = false, length = 255)
     private String title;
 
+    @Size(max = 1000, message = "Description must be less than 1000 characters")
     private String description;
 
+    @NotNull(message = "Genre is mandatory")
     @Column(name = "genre_id")
     private Integer genreId;
 
+    @NotNull(message = "Availability is mandatory")
     @Column(name = "is_available", nullable = false)
     private Boolean isAvailable = true;
 
+    @PastOrPresent(message = "Publication date must be in the past or present")
     @Column(name = "publication_date")
     private LocalDate publicationDate;
 
+    @DecimalMin(value = "0.0", message = "Popularity score must be at least 0.0")
+    @DecimalMax(value = "10.0", message = "Popularity score must be at most 10.0")
     @Column(name = "popularity_score")
     private Float popularityScore;
 
@@ -62,20 +72,9 @@ public class Book {
 
     public void setIsAvailable(Boolean isAvailable) {this.isAvailable = isAvailable;}
 
-    public String getPublicationDate() {
-        if (publicationDate != null) {return publicationDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
-        return null;
-    }
+    public LocalDate getPublicationDate() {return publicationDate;}
 
     public void setPublicationDate(LocalDate publicationDate) {this.publicationDate = publicationDate;}
-
-    public void setPublicationDate(String publicationDate) {
-        if (publicationDate != null && !publicationDate.isEmpty()) {
-            this.publicationDate = LocalDate.parse(publicationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        } else {
-            this.publicationDate = null;
-        }
-    }
 
     public Float getPopularityScore() {return popularityScore;}
 
