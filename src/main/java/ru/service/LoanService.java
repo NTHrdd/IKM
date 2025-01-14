@@ -5,7 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Loan;
 import ru.repository.LoanRepository;
 
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -20,10 +20,10 @@ public class LoanService {
     public Loan addLoan(Loan loan) {return loanRepository.save(loan);}
 
     @Transactional
-    public void updateLoan(UUID loanId, UUID newBookId, UUID newReaderId, String newLoanDate, int newPenalty, String newLoanDuration, String newStatus) {
+    public void updateLoan(UUID loanId, UUID newBookId, UUID newReaderId, LocalDate newLoanDate, int newPenalty, String newLoanDuration, String newStatus) {
         Loan loan = loanRepository.findById(loanId).orElseThrow(() -> new RuntimeException("Loan not found"));
-        loan.setBookId(newBookId); // Предполагается, что bookService доступен
-        loan.setReaderId(newReaderId); // Предполагается, что readerService доступен
+        loan.setBookId(newBookId);
+        loan.setReaderId(newReaderId);
         loan.setLoanDate(newLoanDate);
         loan.setPenalty(newPenalty);
         loan.setLoanDuration(newLoanDuration);

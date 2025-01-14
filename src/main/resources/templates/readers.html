@@ -29,7 +29,7 @@
             <td th:text="${reader.surname}"></td>
             <td th:text="${reader.patronymic}"></td>
             <td th:text="${reader.email}"></td>
-            <td th:text="${reader.birthDate}"></td>
+            <td th:text="${#temporals.format(reader.birthDate, 'yyyy-MM-dd')}"></td> <!-- Форматируем дату -->
             <td th:text="${reader.registrationTime}"></td>
             <td th:text="${reader.phoneNumber}"></td>
             <td>
@@ -46,26 +46,35 @@
         <div class="mb-3">
             <label for="name" class="form-label">Name</label>
             <input type="text" class="form-control" id="name" th:field="*{name}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
         <div class="mb-3">
             <label for="surname" class="form-label">Surname</label>
             <input type="text" class="form-control" id="surname" th:field="*{surname}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></div>
         </div>
         <div class="mb-3">
             <label for="patronymic" class="form-label">Patronymic</label>
             <input type="text" class="form-control" id="patronymic" th:field="*{patronymic}">
+            <div class="text-danger" th:if="${#fields.hasErrors('patronymic')}" th:errors="*{patronymic}"></div>
         </div>
         <div class="mb-3">
             <label for="email" class="form-label">Email</label>
             <input type="email" class="form-control" id="email" th:field="*{email}" required>
+            <div class="text-danger" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div class="mb-3">
             <label for="birthDate" class="form-label">Birth Date</label>
-            <input type="date" class="form-control" id="birthDate" th:field="*{birthDate}">
+            <input type="date" class="form-control" id="birthDate"
+                   th:field="*{birthDate}"
+                   th:value="${reader.birthDate != null} ? ${#temporals.format(reader.birthDate, 'yyyy-MM-dd')} : ''"
+                   max="9999-12-31">
+            <div class="text-danger" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}"></div>
         </div>
         <div class="mb-3">
             <label for="phoneNumber" class="form-label">Phone Number</label>
             <input type="text" class="form-control" id="phoneNumber" th:field="*{phoneNumber}">
+            <div class="text-danger" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}"></div>
         </div>
         <button type="submit" class="btn btn-success">Add Reader</button>
     </form>

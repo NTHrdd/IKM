@@ -1,8 +1,10 @@
 package ru.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.model.Loan;
 import ru.service.LoanService;
@@ -36,7 +38,12 @@ public class LoanController {
     }
 
     @PostMapping
-    public String addLoan(@ModelAttribute Loan loan) {
+    public String addLoan(@Valid @ModelAttribute Loan loan, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("books", bookService.getAllBooks());
+            model.addAttribute("readers", readerService.getAllReaders());
+            return "loans";
+        }
         loanService.addLoan(loan);
         return "redirect:/loans";
     }
@@ -61,7 +68,12 @@ public class LoanController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateLoan(@PathVariable UUID id, @ModelAttribute Loan loan) {
+    public String updateLoan(@PathVariable UUID id, @Valid @ModelAttribute Loan loan, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("books", bookService.getAllBooks());
+            model.addAttribute("readers", readerService.getAllReaders());
+            return "edit-loan";
+        }
         loanService.updateLoan(id, loan.getBookId(), loan.getReaderId(), loan.getLoanDate(), loan.getPenalty(), loan.getLoanDuration(), loan.getStatus());
         return "redirect:/loans";
     }

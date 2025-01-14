@@ -5,6 +5,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.model.Reader;
 import ru.repository.ReaderRepository;
 
+import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.util.List;
 import java.util.UUID;
@@ -23,7 +24,7 @@ public class ReaderService {
     }
 
     @Transactional
-    public void updateReader(UUID readerId, String newName, String newSurname, String newPatronymic, String newEmail, String newBirthDate, String newPhoneNumber) {
+    public void updateReader(UUID readerId, String newName, String newSurname, String newPatronymic, String newEmail, LocalDate newBirthDate, String newPhoneNumber) {
         Reader reader = readerRepository.findById(readerId).orElseThrow();
         reader.setName(newName);
         reader.setSurname(newSurname);

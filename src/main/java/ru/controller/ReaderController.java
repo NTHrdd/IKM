@@ -1,8 +1,10 @@
 package ru.controller;
 
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.model.Reader;
 import ru.service.ReaderService;
@@ -24,7 +26,11 @@ public class ReaderController {
     }
 
     @PostMapping
-    public String addReader(@ModelAttribute Reader reader) {
+    public String addReader(@Valid @ModelAttribute Reader reader, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("readers", readerService.getAllReaders());
+            return "readers";
+        }
         readerService.addReader(reader);
         return "redirect:/readers";
     }
@@ -47,7 +53,8 @@ public class ReaderController {
     }
 
     @PostMapping("/edit/{id}")
-    public String updateReader(@PathVariable UUID id, @ModelAttribute Reader reader) {
+    public String updateReader(@PathVariable UUID id, @Valid @ModelAttribute Reader reader, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {return "edit-reader";}
         readerService.updateReader(id, reader.getName(), reader.getSurname(), reader.getPatronymic(), reader.getEmail(), reader.getBirthDate(), reader.getPhoneNumber());
         return "redirect:/readers";
     }

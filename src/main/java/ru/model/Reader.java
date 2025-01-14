@@ -1,6 +1,9 @@
 package ru.model;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import org.springframework.cglib.core.Local;
+
 import java.time.LocalDate;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
@@ -13,24 +16,33 @@ public class Reader {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
+    @NotBlank(message = "Name is mandatory")
+    @Size(max = 255, message = "Name must be less than 255 characters")
     @Column(nullable = false, length = 255)
     private String name;
 
+    @NotBlank(message = "Surname is mandatory")
+    @Size(max = 255, message = "Surname must be less than 255 characters")
     @Column(nullable = false, length = 255)
     private String surname;
 
+    @Size(max = 255, message = "Patronymic must be less than 255 characters")
     @Column(length = 255)
     private String patronymic;
 
+    @NotBlank(message = "Email is mandatory")
+    @Email(message = "Email should be valid")
     @Column(nullable = false, unique = true, length = 255)
     private String email;
 
+    @Past(message = "Birth date must be in the past")
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @Column(name = "registration_time", updatable = false)
     private ZonedDateTime registrationTime;
 
+    @Pattern(regexp = "^\\+?[0-9]{10,15}$", message = "Phone number must be valid")
     @Column(name = "phone_number", unique = true, length = 15)
     private String phoneNumber;
 
@@ -54,18 +66,9 @@ public class Reader {
 
     public void setEmail(String email) {this.email = email;}
 
-    public String getBirthDate() {
-        if (birthDate != null) {return birthDate.format(DateTimeFormatter.ofPattern("yyyy-MM-dd"));}
-        return null;
-    }
+    public LocalDate getBirthDate() {return birthDate;}
 
-    public void setBirthDate(String birthDate) {
-        if (birthDate != null && !birthDate.isEmpty()) {
-            this.birthDate = LocalDate.parse(birthDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-        } else {
-            this.birthDate = null;
-        }
-    }
+    public void setBirthDate(LocalDate birthDate) {this.birthDate = birthDate;}
 
     public ZonedDateTime getRegistrationTime() {return registrationTime;}
 

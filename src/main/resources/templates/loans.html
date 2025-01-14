@@ -58,6 +58,7 @@
                         th:text="${book.title}">
                 </option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('bookId')}" th:errors="*{bookId}"></div>
         </div>
         <div class="mb-3">
             <label for="readerId" class="form-label">Reader</label>
@@ -68,22 +69,26 @@
                         th:text="${reader.surname + ' ' + reader.name}">
                 </option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('readerId')}" th:errors="*{readerId}"></div>
         </div>
         <div class="mb-3">
             <label for="loanDate" class="form-label">Loan Date</label>
             <input type="date" class="form-control" id="loanDate"
                    th:field="*{loanDate}"
                    required min="1000-01-01" max="9999-12-31">
+            <div class="text-danger" th:if="${#fields.hasErrors('loanDate')}" th:errors="*{loanDate}"></div>
         </div>
         <div class="mb-3">
             <label for="penalty" class="form-label">Penalty</label>
             <input type="number" step="0.01" class="form-control" id="penalty"
                    th:field="*{penalty}">
+            <div class="text-danger" th:if="${#fields.hasErrors('penalty')}" th:errors="*{penalty}"></div>
         </div>
         <div class="mb-3">
             <label for="loanDuration" class="form-label">Loan Duration</label>
             <input type="text" class="form-control" id="loanDuration"
                    th:field="*{loanDuration}">
+            <div class="text-danger" th:if="${#fields.hasErrors('loanDuration')}" th:errors="*{loanDuration}"></div>
         </div>
         <div class="mb-3">
             <label for="status" class="form-label">Status</label>
@@ -92,6 +97,7 @@
                 <option value="overdue">Overdue</option>
                 <option value="closed">Closed</option>
             </select>
+            <div class="text-danger" th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></div>
         </div>
         <button type="submit" class="btn btn-primary">Add Loan</button>
     </form>
