@@ -1,6 +1,9 @@
 package ru.controller;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -10,11 +13,13 @@ import ru.model.Book;
 import ru.service.BookService;
 import ru.service.GenreService;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/books")
 public class BookController {
+    private static final Logger logger = LoggerFactory.getLogger(BookController.class);
     private final BookService bookService;
     private final GenreService genreService;
 
@@ -33,11 +38,22 @@ public class BookController {
 
     @PostMapping
     public String addBook(@Valid @ModelAttribute Book book, BindingResult bindingResult, Model model) {
+        logger.info("Attempting to add a new book: {}", book);
         if (bindingResult.hasErrors()) {
+            logger.warn("Validation errors occurred: {}", bindingResult.getAllErrors());
             model.addAttribute("genres", genreService.getAllGenres());
             return "books";
         }
-        bookService.addBook(book);
+        try {
+            bookService.addBook(book);
+            logger.info("Book added successfully: {}", book);
+        } catch (DataIntegrityViolationException e) {
+            logger.error("Database constraint violation: {}", e.getMessage());
+            // Добавляем сообщение об ошибке в модель
+            model.addAttribute("error", "Database error: " + Objects.requireNonNull(e.getRootCause()).getMessage()); // Используем getRootCause() для получения конкретной ошибки
+            model.addAttribute("genres", genreService.getAllGenres());
+            return "books";
+        }
         return "redirect:/books";
     }
 
@@ -67,5 +83,11 @@ public class BookController {
         }
         bookService.updateBook(id, book.getTitle(), book.getDescription(), book.getGenreId(), book.isAvailable(), book.getPublicationDate(), book.getPopularityScore());
         return "redirect:/books";
+    }
+
+    @PostMapping("/complex-operation")
+    public ResponseEntity<Void> performComplexOperation() {
+        bookService.complexBookOperation();
+        return ResponseEntity.ok().build();
     }
 }

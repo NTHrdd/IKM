@@ -2,7 +2,6 @@ package ru.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
-import org.springframework.cglib.core.Local;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -16,8 +15,6 @@ public class Book {
     @GeneratedValue(generator = "UUID")
     private UUID id;
 
-    @NotBlank(message = "Title is mandatory")
-    @Size(max = 255, message = "Title must be less than 255 characters")
     @Column(nullable = false, length = 255)
     private String title;
 

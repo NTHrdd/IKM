@@ -50,8 +50,7 @@
     <form id="addBookForm" method="post" th:action="@{/books}" th:object="${book}">
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" th:field="*{title}" required>
-            <div class="text-danger" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"></div>
+            <input type="text" class="form-control" id="title" th:field="*{title}">
         </div>
         <div class="mb-3">
             <label for="description" class="form-label">Description</label>
@@ -87,6 +86,10 @@
         </div>
         <button type="submit" class="btn btn-success">Add Book</button>
     </form>
+    <div class="mb-3">
+        <button onclick="performComplexOperation()" class="btn btn-warning">Perform Complex Operation</button>
+    </div>
+    <div th:if="${error}" class="alert alert-danger" th:text="${error}"></div>
 </div>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
@@ -107,6 +110,19 @@
             });
         });
     });
+
+    function performComplexOperation() {
+        fetch('/books/complex-operation', {
+            method: 'POST'
+        }).then(response => {
+            if (response.ok) {
+                alert('Complex operation performed successfully.');
+                location.reload();
+            } else {
+                alert('Failed to perform complex operation.');
+            }
+        });
+    }
 </script>
 </body>
 </html>
