@@ -7,7 +7,6 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.support.TransactionTemplate;
-import org.springframework.transaction.support.TransactionSynchronizationManager;
 import ru.model.Book;
 import ru.repository.BookRepository;
 
@@ -58,15 +57,12 @@ public class BookService {
 
     public Book getBookById(UUID id) {return bookRepository.findById(id).orElseThrow();}
 
-    public Book findById(UUID bookId) {return bookRepository.findById(bookId).orElseThrow();}
-
     public void complexBookOperation() {
         logger.info("Starting complex book operation...");
         transactionTemplate.execute(status -> {
             logger.info("Savepoint created.");
             status.setRollbackOnly();
             logger.info("Rolled back to savepoint.");
-
             return null;
         });
         transactionTemplate.execute(status -> {
@@ -95,7 +91,6 @@ public class BookService {
             logger.info("Transaction marked for rollback.");
             return null;
         });
-
         logger.info("Complex book operation completed.");
     }
 }

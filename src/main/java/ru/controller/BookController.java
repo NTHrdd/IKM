@@ -49,7 +49,6 @@ public class BookController {
             logger.info("Book added successfully: {}", book);
         } catch (DataIntegrityViolationException e) {
             logger.error("Database constraint violation: {}", e.getMessage());
-            // Добавляем сообщение об ошибке в модель
             model.addAttribute("error", "Database error: " + Objects.requireNonNull(e.getRootCause()).getMessage()); // Используем getRootCause() для получения конкретной ошибки
             model.addAttribute("genres", genreService.getAllGenres());
             return "books";
